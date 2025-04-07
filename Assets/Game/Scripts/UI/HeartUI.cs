@@ -48,7 +48,7 @@ public class HeartUI : MonoBehaviour
             {
                 UpdateHeartSprite(currentRejectionLevel);
                 currentRejectionLevel++;
-                Debug.Log("Rejection Level Increased: " + currentRejectionLevel);
+                //Debug.Log("Rejection Level Increased: " + currentRejectionLevel);
 
             }
 
@@ -63,7 +63,7 @@ public class HeartUI : MonoBehaviour
             {
                 UpdateHeartSprite(currentAffectionLevel);
                 currentAffectionLevel++;
-                Debug.Log("Affection Level Increased: " + currentAffectionLevel);
+                //Debug.Log("Affection Level Increased: " + currentAffectionLevel);
             }
 
             if (currentAffectionLevel >= TotalLevel)
@@ -79,7 +79,7 @@ public class HeartUI : MonoBehaviour
         {
             Image heartImage = hearts[index].GetComponent<Image>();
             heartImage.sprite = heart.heartFull;
-            Debug.Log("Heart Icon Changed at:" + hearts[index]);
+            //Debug.Log("Heart Icon Changed at:" + hearts[index]);
 
             Canvas.ForceUpdateCanvases();
         }

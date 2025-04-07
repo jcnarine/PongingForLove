@@ -17,38 +17,44 @@ public class PowerupUI : MonoBehaviour
 
     public Sprite[] spriteSheetDPAD;
 
+    public int passionNeeded;
+
     public string dpadCommand;
     public KeyCode keyboardCommand;
 
     public void Initalize()
     {
-        powerupButton.image = assignedPowerup.IconThumbnail;
-        passionBorder = assignedPowerup.PassionBorder;
-        powerupBorder = assignedPowerup.PowerupBorder;
-        controlBorder = assignedPowerup.ControlBorder;
-        passionText.text = assignedPowerup.PassionNeeded.ToString();
+        powerupButton.image.sprite = assignedPowerup.IconThumbnail;
+        passionBorder.sprite = assignedPowerup.PassionBorder;
+        powerupBorder.sprite = assignedPowerup.PowerupBorder;
+        controlBorder.sprite = assignedPowerup.ControlBorder;
+
+
+        passionNeeded = assignedPowerup.PassionNeeded;
+        passionText.text = passionNeeded.ToString();
+        InitalizeDPadIcon();
     }
 
 
-    public void InitalizeDPadIcon() 
+    private void InitalizeDPadIcon() 
     {
         switch
                 (dpadCommand) {
 
             case ("DPadUp"):
-                controlButton.image.sprite = spriteSheetDPAD[1];
+                controlButton.image.sprite = spriteSheetDPAD[0];
                 break;
 
             case ("DPadRight"):
-                controlButton.image.sprite = spriteSheetDPAD[2];
+                controlButton.image.sprite = spriteSheetDPAD[1];
                 break;
 
             case ("DPadDown"):
-                controlButton.image.sprite = spriteSheetDPAD[3];
+                controlButton.image.sprite = spriteSheetDPAD[2];
                 break;
 
             case ("DPadLeft"):
-                controlButton.image.sprite = spriteSheetDPAD[4];
+                controlButton.image.sprite = spriteSheetDPAD[3];
                 break;
 
 
@@ -63,8 +69,11 @@ public class PowerupUI : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-
-    }
+    //void Update()
+    //{
+    //    if (Input.GetButtonDown(dpadCommand))
+    //    {
+    //        Debug.Log("Power Activated");
+    //    }
+    //}
 }

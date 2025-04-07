@@ -1,35 +1,37 @@
 using System.Timers;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PaddleMovement : MonoBehaviour
 {
-    private float speed = 1f;
+    private float paddleSpeed = 1f;
     public Player paddle;
     private Rigidbody rb;
-    private Vector3 movement;
+    private Vector2 moveInput;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        speed = paddle.fSpeed;
+        paddleSpeed = paddle.fSpeed;
         rb = GetComponent<Rigidbody>(); 
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnMove(InputAction.CallbackContext context) 
     {
-        movement = new Vector3(Input.GetAxisRaw("Horizontal"),0f,0f);
-        //if want drag, movement = new Vector3(Input.GetAxis("Horizontal") * fSpeed * Time.deltaTime, 0f, 0f);
+        moveInput = context.ReadValue<Vector2>(); 
     }
-
+    // Update is called once per frame
     private void FixedUpdate()
     {
-        movePaddle(movement);
+        movePaddle();
     }
-
-    void movePaddle(Vector3 direction) 
+    void movePaddle() 
     {
-        rb.velocity = direction * speed;
+        // Use joystick strength for speed scaling
+        Vector3 movement = new Vector3(moveInput.x * paddleSpeed, 0f, 0f);
+
+        rb.velocity = movement;
     }
 }

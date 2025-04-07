@@ -16,4 +16,8 @@ MonoBehaviour:
   Name: 
   livesTotal: 5
   isMainPlayer: 1
-  powerups: []
+  powerups:
+  - {fileID: 11400000, guid: 6d04df5efff7f6e4ca60de83af664311, type: 2}
+  - {fileID: 11400000, guid: 6d04df5efff7f6e4ca60de83af664311, type: 2}
+  - {fileID: 11400000, guid: 6d04df5efff7f6e4ca60de83af664311, type: 2}
+  - {fileID: 11400000, guid: 6d04df5efff7f6e4ca60de83af664311, type: 2}

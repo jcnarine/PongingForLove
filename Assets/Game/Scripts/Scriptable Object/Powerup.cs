@@ -14,8 +14,8 @@ public enum PowerupType
 
 public class Powerup : ScriptableObject
 {
-    public Image IconThumbnail, ControlImage;
-    public Image PassionBorder, PowerupBorder, ControlBorder;
+    public Sprite IconThumbnail;
+    public Sprite PassionBorder, PowerupBorder, ControlBorder;
     public PowerupType powerupType;
     public int PassionNeeded, Duration;
     public string PowerDescription;
