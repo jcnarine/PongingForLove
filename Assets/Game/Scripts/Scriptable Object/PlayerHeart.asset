@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53c728316603ab940b642d711f64e055, type: 3}
+  m_Name: PlayerHeart
+  m_EditorClassIdentifier: 
+  heartEmpty: {fileID: -531576577, guid: 0b93c80e2b1787b418fdb7a859731e4f, type: 3}
+  heartFull: {fileID: 1302890945, guid: 9d41bd3dc0130d4429ddedd8a7f938f2, type: 3}
