@@ -8,7 +8,7 @@ public class Player : ScriptableObject
 {
     public float fSpeed;
     public string Name;
-    public int livesTotal;
+    public int livesTotal, currentPassionLevel, PassionMax;
     public bool isMainPlayer;
     public Powerup[] powerups;
 }

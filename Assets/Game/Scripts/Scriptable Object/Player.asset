@@ -15,9 +15,11 @@ MonoBehaviour:
   fSpeed: 1
   Name: 
   livesTotal: 5
+  currentPassionLevel: 3
+  PassionMax: 5
   isMainPlayer: 1
   powerups:
   - {fileID: 11400000, guid: 6d04df5efff7f6e4ca60de83af664311, type: 2}
   - {fileID: 11400000, guid: 6d04df5efff7f6e4ca60de83af664311, type: 2}
   - {fileID: 11400000, guid: 6d04df5efff7f6e4ca60de83af664311, type: 2}
-  - {fileID: 11400000, guid: 6d04df5efff7f6e4ca60de83af664311, type: 2}
+  - {fileID: 11400000, guid: 559665fcf08fcb74fa359a99127d75e2, type: 2}
