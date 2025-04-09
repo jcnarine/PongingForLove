@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class PowerupUIManager : MonoBehaviour
@@ -10,9 +11,12 @@ public class PowerupUIManager : MonoBehaviour
     [SerializeField] private GameObject powerupPrefab;
     int InventoryTotal;
 
+    bool activatingPowerup=false;
+    bool disabledPowerup=false;
+    int activatedIndex=0;
+
     [Header("Input Mapping")]
-    public KeyCode[] keyboardKeys = { KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4 };
-    public string[] dpadButtons = { "DPadUp", "DPadRight", "DPadDown", "DPadLeft" };
+    private string[] dpadButtons = { "/XInputControllerWindows/dpad/up", "/XInputControllerWindows/dpad/right", "/XInputControllerWindows/dpad/down", "/XInputControllerWindows/dpad/left" };
 
     // Start is called before the first frame update
     public void Start()
@@ -27,6 +31,29 @@ public class PowerupUIManager : MonoBehaviour
 
     }
 
+    public void PressPowerUp(InputAction.CallbackContext context)
+    {
+        for (int i = 0; i < InventoryTotal; i++)
+        {
+            PowerupUI currentPowerUpUI = powerupIcons[i].GetComponent<PowerupUI>();
+
+            if ((context.control.path == currentPowerUpUI.dpadCommand))
+            {
+                if (player.currentPassionLevel == currentPowerUpUI.passionNeeded)
+                {
+                    activatingPowerup = true;
+                }
+                else 
+                { 
+                    disabledPowerup = true;
+                }
+
+                activatedIndex = i;
+                break;
+            }
+        }
+    }
+
     public void initalizePowerupUI()
     {
         for (int i = 0; i < InventoryTotal; i++)
@@ -36,10 +63,25 @@ public class PowerupUIManager : MonoBehaviour
 
             currentPowerUpUI.assignedPowerup = player.powerups[i];
             currentPowerUpUI.dpadCommand = dpadButtons[i];
-            currentPowerUpUI.keyboardCommand = keyboardKeys[i];
 
             currentPowerUpUI.Initalize();
             powerupIcons.Add(powerupObj);
+        }
+    }
+
+    public void FixedUpdate()
+    {
+        if (activatingPowerup) 
+        {
+            PowerupUI currentPowerUpUI = powerupIcons[activatedIndex].GetComponent<PowerupUI>();
+            currentPowerUpUI.activateUIEffect();
+            activatingPowerup = false;
+        }
+        if (disabledPowerup) 
+        {
+            PowerupUI currentPowerUpUI = powerupIcons[activatedIndex].GetComponent<PowerupUI>();
+            currentPowerUpUI.showNoActivation();
+            disabledPowerup = false;
         }
     }
     public void clearPowerups()
