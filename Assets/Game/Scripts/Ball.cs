@@ -80,20 +80,4 @@ public class Ball : MonoBehaviour
 
         isResetting = false;
     }
-
-    //public static void SpawnExtraBall(GameObject ballPrefab, Vector3 spawnPosition)
-    //{
-    //    Instantiate(ballPrefab, spawnPosition, Quaternion.identity);
-    //    ballCount++;
-    //}
 }
-//if (ballCount > 1)
-//{
-//    GameObject[] balls = GameObject.FindGameObjectsWithTag("Ball");
-//    foreach (GameObject ball in balls)
-//    {
-//        if (ball != gameObject)
-//            Destroy(ball);
-//    }
-//    ballCount = 1;
-//}

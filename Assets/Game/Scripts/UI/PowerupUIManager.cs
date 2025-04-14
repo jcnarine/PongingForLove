@@ -6,17 +6,24 @@ using UnityEngine.UI;
 
 public class PowerupUIManager : MonoBehaviour
 {
+    //References
     private List<GameObject> powerupIcons = new List<GameObject>();
     [SerializeField] private Player player;
     [SerializeField] private GameObject powerupPrefab;
-    int InventoryTotal;
 
-    bool activatingPowerup=false;
-    bool disabledPowerup=false;
-    int activatedIndex=0;
+    //Player Info
+    private int InventoryTotal;
 
-    [Header("Input Mapping")]
+    //Powerup State Flags
+    private bool buttonPressed = false;
+    private bool activatingPowerup = false;
+    private bool disabledPowerup = false;
+    private int activatedIndex = 0;
+
+    //Dpad Button Mapping
     private string[] dpadButtons = { "/XInputControllerWindows/dpad/up", "/XInputControllerWindows/dpad/right", "/XInputControllerWindows/dpad/down", "/XInputControllerWindows/dpad/left" };
+    private string currentContext;
+
 
     // Start is called before the first frame update
     public void Start()
@@ -28,30 +35,44 @@ public class PowerupUIManager : MonoBehaviour
     // Update is called once per frame
     public void Update()
     {
-
+        if (buttonPressed)
+        {
+            CheckPowerups();    
+        }
     }
 
-    public void PressPowerUp(InputAction.CallbackContext context)
+
+
+    public void CheckPowerups() 
     {
+        //Debug.Log($"Powerups: {player.powerups.Length}, DPad slots: {dpadButtons.Length}, InventoryTotal: {InventoryTotal}");
+
         for (int i = 0; i < InventoryTotal; i++)
         {
             PowerupUI currentPowerUpUI = powerupIcons[i].GetComponent<PowerupUI>();
 
-            if ((context.control.path == currentPowerUpUI.dpadCommand))
+            if ((currentContext == currentPowerUpUI.dpadCommand))
             {
-                if (player.currentPassionLevel == currentPowerUpUI.passionNeeded)
+                if (player.currentPassionLevel == currentPowerUpUI.passionNeeded && !currentPowerUpUI.isOnCooldown)
                 {
                     activatingPowerup = true;
                 }
-                else 
-                { 
+                else
+                {
                     disabledPowerup = true;
                 }
 
                 activatedIndex = i;
+                buttonPressed = false;
+                currentContext = null;
                 break;
             }
         }
+    }
+    public void PressPowerUp(InputAction.CallbackContext context)
+    {
+        buttonPressed = true;
+        currentContext = context.control.path;   
     }
 
     public void initalizePowerupUI()
@@ -71,13 +92,14 @@ public class PowerupUIManager : MonoBehaviour
 
     public void FixedUpdate()
     {
-        if (activatingPowerup) 
+        if (activatingPowerup)
         {
             PowerupUI currentPowerUpUI = powerupIcons[activatedIndex].GetComponent<PowerupUI>();
             currentPowerUpUI.activateUIEffect();
+            currentPowerUpUI.TriggerCooldown();
             activatingPowerup = false;
         }
-        if (disabledPowerup) 
+        if (disabledPowerup)
         {
             PowerupUI currentPowerUpUI = powerupIcons[activatedIndex].GetComponent<PowerupUI>();
             currentPowerUpUI.showNoActivation();

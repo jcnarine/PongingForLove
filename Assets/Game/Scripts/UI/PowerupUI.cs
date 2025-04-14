@@ -11,6 +11,8 @@ using UnityEngine.UI;
 
 public class PowerupUI : MonoBehaviour
 {
+    [Header("UI References")]
+
     [SerializeField] private Button powerupButton;
     [SerializeField] private Button controlButton;
     [SerializeField] private Image passionBorder;
@@ -18,18 +20,28 @@ public class PowerupUI : MonoBehaviour
     [SerializeField] private Image controlBorder;
     [SerializeField] private TextMeshProUGUI passionText;
 
+    [Header("Cooldown UI")]
+
+    [SerializeField] private Image cooldownOverlay;
+    [SerializeField] private TextMeshProUGUI cooldownText;
+
+    [Header("Cooldown Settings")]
+
+    [SerializeField] private float startAlpha = 0.5f;
+    [SerializeField] private float endAlpha = 0f;
+
+
+    [Header("Local Variables Settings")]
+
     public Powerup assignedPowerup;
-
-
     [SerializeField] private Sprite[] spriteSheetDPAD;
-
-    public int passionNeeded;
-    public string dpadCommand;
-
     private float UIEffectTimer=0.1f;
+    public string dpadCommand;
+    public int passionNeeded;
 
 
-    [SerializeField] private string currentContext;
+    public bool isOnCooldown = false;
+    private float cooldownTimer;
 
     public void Initalize()
     {
@@ -41,9 +53,51 @@ public class PowerupUI : MonoBehaviour
 
         passionNeeded = assignedPowerup.PassionNeeded;
         passionText.text = passionNeeded.ToString();
+        cooldownText.gameObject.SetActive(false);
+        cooldownOverlay.gameObject.SetActive(false);
         InitalizeDPadIcon();
     }
 
+    public void Update()
+    {
+        if (isOnCooldown) 
+        { 
+            updateCooldownEffect();
+        }
+    }
+
+    public void updateCooldownEffect() 
+    {
+        cooldownTimer -= Time.deltaTime;
+        float t = Mathf.Clamp01(cooldownTimer / assignedPowerup.Duration);
+
+        cooldownOverlay.fillAmount = t;
+        float alpha = Mathf.Lerp(endAlpha, startAlpha, t);
+        cooldownOverlay.color = new Color(cooldownOverlay.color.r, cooldownOverlay.color.g, cooldownOverlay.color.b, alpha);
+
+        cooldownText.text = Mathf.CeilToInt(cooldownTimer).ToString();
+
+        if (cooldownTimer <= 0f)
+        {
+            isOnCooldown = false;
+            cooldownOverlay.fillAmount = 0f;
+            cooldownOverlay.color = new Color(cooldownOverlay.color.r, cooldownOverlay.color.g, cooldownOverlay.color.b, 0);
+            cooldownText.gameObject.SetActive(false);
+        }
+    }
+
+    public void TriggerCooldown()
+    {
+        cooldownTimer = assignedPowerup.Duration;
+        isOnCooldown = true;
+
+        cooldownOverlay.fillAmount = 1f;
+        cooldownOverlay.color = new Color(cooldownOverlay.color.r, cooldownOverlay.color.g, cooldownOverlay.color.b, startAlpha);
+
+        cooldownText.gameObject.SetActive(true);
+        cooldownOverlay.gameObject.SetActive(true);
+        cooldownText.text = Mathf.CeilToInt(cooldownTimer).ToString();
+    }
 
     private void InitalizeDPadIcon()
     {

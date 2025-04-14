@@ -3,7 +3,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PaddleMovement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
     private float paddleSpeed = 1f;
     public Player paddle;
