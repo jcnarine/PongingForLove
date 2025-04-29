@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditorInternal;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -44,7 +43,7 @@ public class Ball : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (rb.velocity.magnitude < currentSpeed)
+        if (rb.velocity.magnitude < currentSpeed && !isResetting)
         {
             rb.velocity = rb.velocity.normalized * currentSpeed;
         }
@@ -59,16 +58,17 @@ public class Ball : MonoBehaviour
 
     IEnumerator ResetBallCoroutine()
     {
+        isResetting = true;
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
-        rb.isKinematic = true; // Freeze physics
         transform.position = startPosition;
 
         yield return new WaitForSeconds(2f);
 
-        rb.isKinematic = false; // Re-enable physics
         currentSpeed = minSpeed;
+
         moveBall();
+        isResetting = false;
     }
 
     void OnTriggerEnter(Collider other)

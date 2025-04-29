@@ -10,7 +10,7 @@ public class PowerupManager : MonoBehaviour
 
     public Player[] players;
 
-    public PowerupUIManager powerupManager;
+    public PowerupUIManager powerupUIManager;
     public List<GameObject> PowerupUIManagerList;
 
     private bool buttonPressed = false;
@@ -75,15 +75,17 @@ public class PowerupManager : MonoBehaviour
         if (currentPlayer.currentPassionLevel >= powerup.PassionNeeded && !powerup.onCooldown && (powerup.isInfiniteUses || powerup.Uses>0))
         {
             players[0].powerups[activatedIndex].onCooldown = true;
-            powerupManager.activatingUI(activatedIndex);
+            powerupUIManager.activatingUI(activatedIndex);
             if (!powerup.isInfiniteUses) 
             {
                 powerup.Uses--;
             }
+
+
         }
         else
         {
-            powerupManager.deactivatingUI(activatedIndex);
+            powerupUIManager.deactivatingUI(activatedIndex);
         }
     }
 
