@@ -1,13 +1,18 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditorInternal;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class Ball : MonoBehaviour
 {
+    public float minSpeed = 0.5f;
+    public float maxSpeed = 1.5f;
+    public float speedIncrement = 0.05f;
+
     //public GameObject ballPrefab;
-    public float speed;
+    public float currentSpeed;
     private Rigidbody rb;
     private Vector3 startPosition;
     //public static int ballCount = 1;
@@ -22,6 +27,7 @@ public class Ball : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         startPosition = transform.position;
+        currentSpeed = minSpeed;
 
         // Dynamically assign HeartUI components if not already set
         if (rejectionUI == null)
@@ -36,37 +42,38 @@ public class Ball : MonoBehaviour
         moveBall();
     }
 
-    // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        
-    }
-
-    void ResetBall() 
-    {
-        transform.position = startPosition;
-        rb.velocity = Vector3.zero;
-        moveBall();
-        Invoke(nameof(AllowReset), 0.5f);
-
+        if (rb.velocity.magnitude < currentSpeed)
+        {
+            rb.velocity = rb.velocity.normalized * currentSpeed;
+        }
     }
 
     void moveBall() {
         float angle = Random.Range(minAngle, maxAngle) * Mathf.Deg2Rad;
         Vector3 baseDirection = isPlayerScoring ? Vector3.forward : Vector3.back;
         Vector3 direction = Quaternion.Euler(0, Random.Range(-maxAngle, maxAngle), 0) * baseDirection;
-        rb.AddForce(direction * speed, ForceMode.Impulse);
+        rb.AddForce(direction * currentSpeed, ForceMode.Impulse);
     }
 
-    void AllowReset()
+    IEnumerator ResetBallCoroutine()
     {
-        isResetting = true;
-    }
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        rb.isKinematic = true; // Freeze physics
+        transform.position = startPosition;
 
+        yield return new WaitForSeconds(2f);
+
+        rb.isKinematic = false; // Re-enable physics
+        currentSpeed = minSpeed;
+        moveBall();
+    }
 
     void OnTriggerEnter(Collider other)
     {
-        ResetBall();
+        StartCoroutine(ResetBallCoroutine());
 
         if (other.CompareTag("EnemyGoal"))
         {
@@ -79,5 +86,11 @@ public class Ball : MonoBehaviour
         }
 
         isResetting = false;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        currentSpeed += speedIncrement;
+        currentSpeed = Mathf.Clamp(currentSpeed, minSpeed, maxSpeed);
     }
 }

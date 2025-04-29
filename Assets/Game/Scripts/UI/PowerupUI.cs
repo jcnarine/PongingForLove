@@ -34,13 +34,10 @@ public class PowerupUI : MonoBehaviour
     [Header("Local Variables Settings")]
 
     public Powerup assignedPowerup;
+
     [SerializeField] private Sprite[] spriteSheetDPAD;
     private float UIEffectTimer=0.1f;
-    public string dpadCommand;
-    public int passionNeeded;
 
-
-    public bool isOnCooldown = false;
     private float cooldownTimer;
 
     public void Initalize()
@@ -50,17 +47,14 @@ public class PowerupUI : MonoBehaviour
         powerupBorder.sprite = assignedPowerup.PowerupBorder;
         controlBorder.sprite = assignedPowerup.ControlBorder;
 
-
-        passionNeeded = assignedPowerup.PassionNeeded;
-        passionText.text = passionNeeded.ToString();
+        passionText.text = assignedPowerup.PassionNeeded.ToString();
         cooldownText.gameObject.SetActive(false);
         cooldownOverlay.gameObject.SetActive(false);
-        InitalizeDPadIcon();
     }
 
     public void Update()
     {
-        if (isOnCooldown) 
+        if (assignedPowerup.onCooldown) 
         { 
             updateCooldownEffect();
         }
@@ -79,7 +73,7 @@ public class PowerupUI : MonoBehaviour
 
         if (cooldownTimer <= 0f)
         {
-            isOnCooldown = false;
+            assignedPowerup.onCooldown = false;
             cooldownOverlay.fillAmount = 0f;
             cooldownOverlay.color = new Color(cooldownOverlay.color.r, cooldownOverlay.color.g, cooldownOverlay.color.b, 0);
             cooldownText.gameObject.SetActive(false);
@@ -89,7 +83,6 @@ public class PowerupUI : MonoBehaviour
     public void TriggerCooldown()
     {
         cooldownTimer = assignedPowerup.Duration;
-        isOnCooldown = true;
 
         cooldownOverlay.fillAmount = 1f;
         cooldownOverlay.color = new Color(cooldownOverlay.color.r, cooldownOverlay.color.g, cooldownOverlay.color.b, startAlpha);
@@ -99,28 +92,26 @@ public class PowerupUI : MonoBehaviour
         cooldownText.text = Mathf.CeilToInt(cooldownTimer).ToString();
     }
 
-    private void InitalizeDPadIcon()
+    public void InitalizeIcons(int index)
     {
-        switch (dpadCommand)
+        switch (index)
         {
 
-            case ("/XInputControllerWindows/dpad/up"):
+            case (0):
                 controlButton.image.sprite = spriteSheetDPAD[0];
                 break;
 
-            case ("/XInputControllerWindows/dpad/right"):
+            case (1):
                 controlButton.image.sprite = spriteSheetDPAD[1];
                 break;
 
-            case ("/XInputControllerWindows/dpad/down"):
+            case (2):
                 controlButton.image.sprite = spriteSheetDPAD[2];
                 break;
 
-            case ("/XInputControllerWindows/dpad/left"):
+            case (3):
                 controlButton.image.sprite = spriteSheetDPAD[3];
                 break;
-
-
         }
 
 

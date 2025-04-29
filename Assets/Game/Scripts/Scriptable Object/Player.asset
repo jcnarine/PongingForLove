@@ -20,6 +20,6 @@ MonoBehaviour:
   isMainPlayer: 1
   powerups:
   - {fileID: 11400000, guid: 6d04df5efff7f6e4ca60de83af664311, type: 2}
-  - {fileID: 11400000, guid: 6d04df5efff7f6e4ca60de83af664311, type: 2}
-  - {fileID: 11400000, guid: 6d04df5efff7f6e4ca60de83af664311, type: 2}
   - {fileID: 11400000, guid: 559665fcf08fcb74fa359a99127d75e2, type: 2}
+  - {fileID: 11400000, guid: cce24883a2daa4648bca5bb84be13821, type: 2}
+  - {fileID: 11400000, guid: a4eb61c3e59e9274f96bc0b865f90e22, type: 2}

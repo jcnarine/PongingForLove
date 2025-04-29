@@ -18,7 +18,11 @@ MonoBehaviour:
   currentPassionLevel: 0
   PassionMax: 5
   isMainPlayer: 0
-  powerups: []
+  powerups:
+  - {fileID: 11400000, guid: 6d04df5efff7f6e4ca60de83af664311, type: 2}
+  - {fileID: 11400000, guid: 6d04df5efff7f6e4ca60de83af664311, type: 2}
+  - {fileID: 11400000, guid: 6d04df5efff7f6e4ca60de83af664311, type: 2}
+  - {fileID: 11400000, guid: 559665fcf08fcb74fa359a99127d75e2, type: 2}
   difficulty: 1
   defaultBodySprite: {fileID: 0}
   bodyVariants: []

@@ -19,4 +19,7 @@ MonoBehaviour:
   powerupType: 1
   PassionNeeded: 5
   Duration: 15
+  Uses: 1
   PowerDescription: Blah Blah Blah
+  onCooldown: 0
+  isInfiniteUses: 1
