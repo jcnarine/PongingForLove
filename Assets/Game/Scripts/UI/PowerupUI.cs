@@ -42,19 +42,19 @@ public class PowerupUI : MonoBehaviour
 
     public void Initalize()
     {
-        powerupButton.image.sprite = assignedPowerup.IconThumbnail;
-        passionBorder.sprite = assignedPowerup.PassionBorder;
-        powerupBorder.sprite = assignedPowerup.PowerupBorder;
-        controlBorder.sprite = assignedPowerup.ControlBorder;
+        powerupButton.image.sprite = assignedPowerup.powerupUIGraphics.IconThumbnail;
+        passionBorder.sprite = assignedPowerup.powerupUIGraphics.PassionBorder;
+        powerupBorder.sprite = assignedPowerup.powerupUIGraphics.PowerupBorder;
+        controlBorder.sprite = assignedPowerup.powerupUIGraphics.ControlBorder;
 
-        passionText.text = assignedPowerup.PassionNeeded.ToString();
+        passionText.text = assignedPowerup.powerData.PassionNeeded.ToString();
         cooldownText.gameObject.SetActive(false);
         cooldownOverlay.gameObject.SetActive(false);
     }
 
     public void Update()
     {
-        if (assignedPowerup.onCooldown) 
+        if (assignedPowerup.powerData.onCooldown) 
         { 
             updateCooldownEffect();
         }
@@ -63,7 +63,7 @@ public class PowerupUI : MonoBehaviour
     public void updateCooldownEffect() 
     {
         cooldownTimer -= Time.deltaTime;
-        float t = Mathf.Clamp01(cooldownTimer / assignedPowerup.Duration);
+        float t = Mathf.Clamp01(cooldownTimer / assignedPowerup.powerData.PassionNeeded);
 
         cooldownOverlay.fillAmount = t;
         float alpha = Mathf.Lerp(endAlpha, startAlpha, t);
@@ -73,7 +73,7 @@ public class PowerupUI : MonoBehaviour
 
         if (cooldownTimer <= 0f)
         {
-            assignedPowerup.onCooldown = false;
+            assignedPowerup.powerData.onCooldown = false;
             cooldownOverlay.fillAmount = 0f;
             cooldownOverlay.color = new Color(cooldownOverlay.color.r, cooldownOverlay.color.g, cooldownOverlay.color.b, 0);
             cooldownText.gameObject.SetActive(false);
@@ -82,7 +82,7 @@ public class PowerupUI : MonoBehaviour
 
     public void TriggerCooldown()
     {
-        cooldownTimer = assignedPowerup.Duration;
+        cooldownTimer = assignedPowerup.powerData.PassionNeeded;
 
         cooldownOverlay.fillAmount = 1f;
         cooldownOverlay.color = new Color(cooldownOverlay.color.r, cooldownOverlay.color.g, cooldownOverlay.color.b, startAlpha);

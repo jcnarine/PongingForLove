@@ -10,46 +10,31 @@ public class PauseManager : MonoBehaviour
     public PlayerInput playerInput;
     public Volume blurVolume; // For post-processing blur
 
-    void Start()
+    public bool isPaused = false, triggerChange = false;
+
+    private void Start()
     {
         pauseMenuUI.SetActive(false);
         if (blurVolume != null)
             blurVolume.weight = 0f;
     }
 
-    public void OnPause(InputAction.CallbackContext context)
+    private void Update()
     {
-        if (context.performed)
+        if (triggerChange) 
         {
-            PauseGame();
+            SetPauseState(!isPaused);
+            triggerChange = false;
         }
     }
 
-    public void OnResume(InputAction.CallbackContext context)
+    private void SetPauseState(bool pause)
     {
-        if (context.performed)
-        {
-            ResumeGame();   
-        }
-    }
+        isPaused = pause;
+        Time.timeScale = pause ? 0f : 1f;
+        pauseMenuUI.SetActive(pause);
 
-    public void PauseGame()
-    {
-        Time.timeScale = 0f;
-        pauseMenuUI.SetActive(true);
         if (blurVolume != null)
-            blurVolume.weight = 1f;
-
-        playerInput.SwitchCurrentActionMap("UI");
-    }
-
-    public void ResumeGame()
-    {
-        Time.timeScale = 1f;
-        pauseMenuUI.SetActive(false);
-        if (blurVolume != null)
-            blurVolume.weight = 0f;
-
-        playerInput.SwitchCurrentActionMap("Player");
+            blurVolume.weight = pause ? 1f : 0f;
     }
 }

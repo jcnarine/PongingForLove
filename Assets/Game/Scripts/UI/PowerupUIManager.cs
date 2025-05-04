@@ -8,23 +8,15 @@ public class PowerupUIManager : MonoBehaviour
 {
     //References
     public List<PowerupUI> powerupIcons = new List<PowerupUI>();
-    [SerializeField] private Player player;
+
+    [SerializeField] private UIManager uiController;
     [SerializeField] private GameObject powerupPrefab;
 
     //Player Info
-    private int InventoryTotal;
+    public int InventoryTotal;
 
-
-    // Start is called before the first frame update
-    public void Start()
+    public void initializePowerupUI(Character player)
     {
-        InventoryTotal = player.powerups.Length;
-        initalizePowerupUI();
-    }
-
-    public void initalizePowerupUI()
-    {
-
         for (int i = 0; i < InventoryTotal; i++)
         {
             GameObject powerupObj = Instantiate(powerupPrefab, transform);

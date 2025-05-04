@@ -3,27 +3,24 @@ using UnityEngine;
 
 public class HeartPool : MonoBehaviour
 {
-    [SerializeField] private GameObject heartUIPrefab;  // Reference to the heart prefab
-    private Stack<GameObject> heartPool = new Stack<GameObject>();  // Stack to pool heart objects
+    [SerializeField] private GameObject heartUIPrefab;
+    private Stack<GameObject> heartPool = new Stack<GameObject>();
 
-    // Get an object from the pool
     public GameObject GetHeart()
     {
         if (heartPool.Count > 0)
         {
-            GameObject heart = heartPool.Pop();  // Pop a heart object from the stack
-            heart.SetActive(true);  // Make sure the heart is active
+            GameObject heart = heartPool.Pop();
+            heart.SetActive(true);
             return heart;
         }
-        // If no objects are available in the pool, instantiate a new one
         GameObject newHeart = Instantiate(heartUIPrefab);
-        return newHeart;  // Return the newly instantiated heart
+        return newHeart;
     }
 
-    // Return an object to the pool
     public void ReturnHeart(GameObject heart)
     {
-        heart.SetActive(false);  // Deactivate the heart before returning it to the pool
-        heartPool.Push(heart);   // Push the heart back onto the stack
+        heart.SetActive(false);
+        heartPool.Push(heart);
     }
 }
